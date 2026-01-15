@@ -51,6 +51,9 @@ let updateUser = async (req, res) => {
     // console.log(req.params.id);
 
     let userId = req.params.id
+    if (req.body.password) {
+        return res.status(400).json({ message: "Password Update is not allowed" })
+    }
     try {
         if (!userId) {
             return res.status(404).json({ message: "User not found" });
@@ -59,14 +62,14 @@ let updateUser = async (req, res) => {
         updateData = await User.findByIdAndUpdate(userId,
             { username, email },
             { new: true, runValidators: true }
-        )
+        ).select("-password")
 
         if (!updateData) {
             return res.status(404).json({ message: "The User Doesn't exist" });
         }
-        
+
         res.status(200).json({
-            message: "User updated successfully",data:updateData
+            message: "User updated successfully", data: updateData
         });
 
     } catch (error) {
@@ -75,7 +78,7 @@ let updateUser = async (req, res) => {
 }
 
 let deleteUser = async (req, res) => {
-
+    let deleteId = req.params.id
     try {
         let deleteData = await User.findByIdAndDelete({ _id: deleteId });
         if (!deleteData) {
@@ -87,8 +90,6 @@ let deleteUser = async (req, res) => {
         res.status(400).json({ error: "Invalid ID" });
     }
 }
-
-
 
 
 module.exports = { CreateUser, getUserById, updateUser, deleteUser }
