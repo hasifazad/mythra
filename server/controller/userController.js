@@ -91,19 +91,34 @@ let deleteUser = async (req, res) => {
     }
 }
 let loginUser = async (req, res) => {
-    let { email, password } = req.body
+    let { email, password } = req.body;
+
     try {
-        let userExist = await User.findOne({ email })
-        if (!userExist) return res.status(404).json({ message: "User not found" });
-        let isMatch = await bcrypt.compare(password, userExist.password)
-        if (!isMatch) return res.status(404).json({ message: "Password Does not Match" });
-        res.status(200).json({ message: "Welcome to Mythra" })
+        let userExist = await User.findOne({ email });
+
+        if (!userExist) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        let isMatch = await bcrypt.compare(password, userExist.password);
+
+        if (!isMatch) {
+            return res.status(401).json({ message: "Invalid email or password" });
+        }
+
+
+
+        res.status(200).json({
+            message: "Welcome to Mythra",
+
+        });
+
     } catch (error) {
-        res.status(400).json({ error: "Invalid Email and Password" });
+        console.error(error);
+        res.status(500).json({ message: "Server error" });
     }
+};
 
-
-}
 
 
 module.exports = { CreateUser, getUserById, updateUser, deleteUser, loginUser }

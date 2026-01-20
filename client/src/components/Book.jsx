@@ -6,7 +6,7 @@ function Book() {
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center px-4 bg-gradient-to-br from-[#0b0d18] via-[#0f1224] to-[#0b0d18]">
-      <div className="w-full max-w-md sm:max-w-lg bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-6 sm:p-7 text-zinc-100">
+      <div className="w-full max-w-md m-10  sm:max-w-lg bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-6 sm:p-7 text-zinc-100">
 
         {/* Brand */}
         <h1 className="text-center text-4xl font-bold bg-gradient-to-r from-yellow-400 via-purple-400 to-pink-500 bg-clip-text text-transparent mb-2">
