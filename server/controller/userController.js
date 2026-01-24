@@ -10,7 +10,7 @@ let CreateUser = async (req, res) => {
         if (isUserEmail) {
             return res.status(409).json({ message: "Email already exists" });
         }
-
+ 
         let hash = await bcrypt.hash(password, 10)
 
         let newUser = await new User({
@@ -33,24 +33,26 @@ let getUserById = async (req, res) => {
     let userId = req.params.id
     try {
 
-        let userData = await User.findOne({ _id: userId })
+        let userData = await User.findOne({ _id: userId }).select('-password')
         if (!userData) {
             return res.status(404).json({ message: "User not found" });
         }
-        res.send(userData)
+        res.status(200).json(userData);
 
     } catch (error) {
-        res.status(500).json({
+        res.status(400).json({
             message: "Server error or no result found"
         });
     }
 }
 
 
+
 let updateUser = async (req, res) => {
     // console.log(req.params.id);
 
     let userId = req.params.id
+    let { username, email } = req.body
     if (req.body.password) {
         return res.status(400).json({ message: "Password Update is not allowed" })
     }
@@ -58,11 +60,15 @@ let updateUser = async (req, res) => {
         if (!userId) {
             return res.status(404).json({ message: "User not found" });
         }
-        let { username, email } = req.body
-        updateData = await User.findByIdAndUpdate(userId,
-            { username, email },
+        let  updateFields = {};
+        if (req.body.username) updateFields.username = username;
+        if (req.body.email) updateFields.email = email;
+
+        let updateData = await User.findByIdAndUpdate(userId,
+             updateFields,
             { new: true, runValidators: true }
         ).select("-password")
+        // console.log(updateData);
 
         if (!updateData) {
             return res.status(404).json({ message: "The User Doesn't exist" });
@@ -110,6 +116,7 @@ let loginUser = async (req, res) => {
 
         res.status(200).json({
             message: "Welcome to Mythra",
+            userId:userExist.id
 
         });
 

@@ -1,5 +1,5 @@
 let express = require('express')
-let cors=require('cors')
+let cors = require('cors')
 const mongoDb = require('./config/mongoDb');
 const userRoute = require('./routes/userRoute');
 const bookRoute = require('./routes/bookRoute');
@@ -16,9 +16,9 @@ app.use('/api/book', bookRoute)
 app.use('/api/movie', movieRoute)
 
 
+
 app.listen(3000, () => {
     console.log("Mithra-app server Connected");
 })
-
 
  

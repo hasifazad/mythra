@@ -4,8 +4,9 @@ const { CreateUser, getUserById, updateUser, deleteUser, login, loginUser } = re
 let userRoute = express.Router()
 
 userRoute.post('/', CreateUser)
-userRoute.get('/profile/:id', getUserById)
-userRoute.patch('/update/:id',updateUser)
-userRoute.delete('/delete/:id',deleteUser)
-userRoute.get('/login',loginUser)
+userRoute.get('/profile/:id', getUserById); 
+userRoute.patch('/update/:id', updateUser);
+userRoute.delete('/delete/:id', deleteUser);
+userRoute.post('/login', loginUser)
+
 module.exports = userRoute

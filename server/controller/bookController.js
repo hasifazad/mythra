@@ -2,8 +2,13 @@ const Books = require("../models/bookModel");
 
 let addBook = async (req, res) => {
     let { imageUrl, title, author, genre, pages, watchedOn, rating, review } = req.body
+
     try {
-        let userId = req.params.id
+        let userId = req.params.userId
+
+        if (!userId) {
+            return res.status(400).json({ message: "User ID missing" });
+        }
         // console.log(userId);
         let isBookExist = await Books.findOne({ title, userId });
 
@@ -12,12 +17,12 @@ let addBook = async (req, res) => {
         }
         let newBook = await new Books({
             userId,
-            imageUrl,
+            imageUrl: req.file?.path || "",
             title,
             author,
             genre,
             pages,
-            watchedOn,
+            readOn,
             rating,
             review
         })
@@ -34,14 +39,14 @@ let addBook = async (req, res) => {
 
 let getBooks = async (req, res) => {
     try {
-        let userId = req.params.id
+        let userId = req.params.userId
         let data = {}
         // console.log(data);
 
         if (userId) {
             data.userId = userId
         }
-        let bookData = await Books.find(data)
+        let bookData = await Books.find({ userId })
         // console.log(bookData);
 
         res.status(200).json({
@@ -94,4 +99,25 @@ let updateBook = async (req, res) => {
     }
 }
 
-module.exports = { addBook, getBooks, getBookById, updateBook }
+let getBookCountByUser = async (req, res) => {
+    try {
+        let userId = req.params.userId;
+
+        if (!userId) {
+            return res.status(400).json({ message: "User ID is required" });
+        }
+
+        let totalBooks = await Books.countDocuments({ userId });
+
+        res.status(200).json({
+            message: "Book count fetched successfully",
+            totalBooks
+        });
+    } catch (error) {
+        console.error("Book Count Error:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+}
+
+
+module.exports = { addBook, getBooks, getBookById, updateBook, getBookCountByUser }

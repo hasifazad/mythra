@@ -1,5 +1,5 @@
 let mongoose = require('mongoose')
-const Movies = require('./movieModel')
+let Movies = require('./movieModel')
 
 let userSchema = new mongoose.Schema({
     username: {

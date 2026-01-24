@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import mithralogo from "../assets/images/mithralogo.png";
 import axios from 'axios'
 import api from "../axios/axios";
 
 function Signup() {
+  let navigate = useNavigate();
   let [data, setData] = useState({
     username: "",
     email: "",
@@ -60,9 +61,9 @@ function Signup() {
     e.preventDefault();
 
     let validateErrors = validate();
-    console.log(validateErrors);
-    console.log(Object.keys(validateErrors));
-    
+    // console.log(validateErrors);
+    // console.log(Object.keys(validateErrors));
+
     setErrors(validateErrors)
     if (Object.keys(validateErrors).length > 0) {
       return;
@@ -72,6 +73,7 @@ function Signup() {
       await api.post("/user", data)
 
       alert("User Registration successful!");
+      navigate('/')
 
     } catch (error) {
       console.error("Error:", error.response?.data || error.message);

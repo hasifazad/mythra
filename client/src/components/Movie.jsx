@@ -1,150 +1,112 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import React, { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 function Movie() {
-  const [showMore, setShowMore] = useState(false);
+    const [search, setSearch] = useState("");
 
-  return (
-    <div className="min-h-screen w-full flex items-center justify-center px-4 bg-linear-to-br from-[#0b0d18] via-[#0f1224] to-[#0b0d18]">
-      <div className="w-full max-w-md m-15 sm:max-w-lg bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-6 sm:p-7 text-zinc-100">
+    const movies = [
+        { id: 1, title: "Inception", director: "Christopher Nolan", rating: 5 },
+        { id: 2, title: "Interstellar", director: "Christopher Nolan", rating: 5 },
+        { id: 3, title: "The Dark Knight", director: "Christopher Nolan", rating: 5 },
+        { id: 4, title: "Parasite", director: "Bong Joon-ho", rating: 4 },
+    ];
 
-        {/* Brand */}
-        <h1 className="text-center text-4xl font-bold bg-linear-to-r from-yellow-400 via-purple-400 to-pink-500 bg-clip-text text-transparent mb-2">
-          Mythra
-        </h1>
-        <p className="text-center text-zinc-400 mb-8 text-sm">
-          Add a movie to your journey 🎬✨
-        </p>
+    const filteredMovies = useMemo(() => {
+        return movies.filter((movie) =>
+            movie.title.toLowerCase().includes(search.toLowerCase())
+        );
+    }, [search]);
 
-        <form className="space-y-5">
+    return (
+        <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-zinc-100 flex flex-col">
+            <Navbar />
 
-          {/* Movie Poster */}
-          <div>
-            <label className="block text-sm text-zinc-300 mb-1">Movie Poster</label>
-            <input
-              type="file"
-              className="w-full px-4 py-2 rounded-lg bg-zinc-900/80 border border-white/10 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
-          </div>
+            <section className="w-full max-w-7xl mx-auto px-6 py-10 flex-1">
+                {/* Top Bar */}
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+                    <h1 className="text-3xl font-bold bg-gradient-to-r from-[#F5C77A] via-purple-400 to-[#7665f0] bg-clip-text text-transparent">
+                        🎬 My Movies
+                    </h1>
 
-          {/* Movie Title */}
-          <div>
-            <label className="block text-sm text-zinc-300 mb-1">Movie Title</label>
-            <input
-              type="text"
-              className="w-full px-4 py-3 rounded-lg bg-zinc-900/80 border border-white/10 focus:ring-2 focus:ring-purple-500"
-            />
-          </div>
+                    <Link
+                        to="/addmovie"
+                        className="px-5 py-2.5 rounded-2xl shadow-lg bg-gradient-to-r from-purple-600 to-indigo-500 hover:opacity-90 transition font-medium text-center"
+                    >
+                        Add Movie
+                    </Link>
+                </div>
 
-          {/* Director */}
-          <div>
-            <label className="block text-sm text-zinc-300 mb-1">Director</label>
-            <input
-              type="text"
-              className="w-full px-4 py-3 rounded-lg bg-zinc-900/80 border border-white/10 focus:ring-2 focus:ring-purple-500"
-            />
-          </div>
+                {/* Search */}
+                <div className="flex flex-col md:flex-row gap-6 mb-12">
+                    <input
+                        type="text"
+                        placeholder="Search movies..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="flex-1 px-4 py-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder-zinc-400"
+                    />
+                </div>
 
-          {/* Genre */}
-          <div>
-            <label className="block text-sm text-zinc-300 mb-1">Genre</label>
-            <input
-              type="text"
-              placeholder="Action, Drama, Sci-Fi..."
-              className="w-full px-4 py-3 rounded-lg bg-zinc-900/80 border border-white/10 focus:ring-2 focus:ring-purple-500"
-            />
-          </div>
+                {/* Movie Grid */}
+                {filteredMovies.length === 0 ? (
+                    <div className="text-center text-zinc-400 mt-20">No movies found.</div>
+                ) : (
+                    <div className="flex flex-wrap gap-6">
+                        {filteredMovies.map((movie) => (
+                            <div
+                                key={movie.id}
+                                className="w-full sm:w-[48%] lg:w-[31%] xl:w-[23%] rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-lg hover:scale-[1.02] transition p-4 flex flex-col gap-3"
+                            >
+                                <div className="h-44 bg-gradient-to-br from-purple-700/40 to-indigo-700/40 rounded-xl flex items-center justify-center text-sm text-zinc-300">
+                                    Poster
+                                </div>
 
-          {/* Review */}
-          <div>
-            <label className="block text-sm text-zinc-300 mb-1">Review</label>
-            <textarea
-              rows="3"
-              placeholder="Your thoughts about this movie..."
-              className="w-full px-4 py-3 rounded-lg bg-zinc-900/80 border border-white/10 focus:ring-2 focus:ring-purple-500 resize-none"
-            />
-          </div>
+                                <div>
+                                    <h2 className="font-semibold text-lg leading-tight">
+                                        {movie.title}
+                                    </h2>
+                                    <p className="text-sm text-zinc-400">by {movie.director}</p>
+                                </div>
 
-          {/* Toggle */}
-          <button
-            type="button"
-            onClick={() => setShowMore(!showMore)}
-            className="w-full py-2 rounded-lg text-sm font-medium text-purple-400 border border-purple-500/30 hover:bg-purple-500/10 transition"
-          >
-            {showMore ? "Hide additional details" : "+ Add more details"}
-          </button>
+                                <div className="text-yellow-400 text-sm">
+                                    {"⭐".repeat(movie.rating)}
+                                </div>
 
-          {/* Additional Fields */}
-          {showMore && (
-            <div className="space-y-5 pt-2">
+                                <p className="text-xs text-zinc-500 mt-auto">
+                                    Personal notes about the movie...
+                                </p>
+                                <div className="mt-auto pt-4 border-t border-white/10 flex flex-col sm:flex-row gap-3">
+                                    {/* Edit */}
+                                    <Link
+                                        to={`/update/${movie.id}`}
+                                        className="w-full sm:flex-1 text-center py-2.5 px-4 rounded-2xl shadow-lg bg-gradient-to-r from-purple-600 to-indigo-500 hover:opacity-90 transition font-medium text-sm"
+                                    >
+                                        Edit
+                                    </Link>
 
-              {/* Watched On */}
-              <div>
-                <label className="block text-sm text-zinc-300 mb-1">Watched On</label>
-                <input
-                  type="date"
-                  className="w-full px-4 py-3 rounded-lg bg-zinc-900/80 border border-white/10 focus:ring-2 focus:ring-purple-500"
-                />
-              </div>
+                                    {/* Delete */}
+                                    <Link
+                                        to="#"
+                                        className="w-full sm:flex-1 text-center py-2.5 px-4 rounded-2xl shadow-lg bg-gradient-to-r from-pink-600 to-red-500 hover:opacity-90 transition font-medium text-sm"
+                                    >
+                                        Delete
+                                    </Link>
+                                </div>
 
-              {/* Duration */}
-              <div>
-                <label className="block text-sm text-zinc-300 mb-1">Duration (minutes)</label>
-                <input
-                  type="number"
-                  className="w-full px-4 py-3 rounded-lg bg-zinc-900/80 border border-white/10 focus:ring-2 focus:ring-purple-500"
-                />
-              </div>
+                            </div>
 
-              {/* Status */}
-              <div>
-                <label className="block text-sm text-zinc-300 mb-1">Status</label>
-                <select
-                  defaultValue=""
-                  className="w-full px-4 py-3 rounded-lg bg-zinc-900/80 border border-white/10 focus:ring-2 focus:ring-purple-500"
-                >
-                  <option value="" disabled>Select watching status</option>
-                  <option value="to-watch">🎞️ To Watch</option>
-                  <option value="watching">👀 Watching</option>
-                  <option value="completed">✅ Watched</option>
-                </select>
-              </div>
 
-              {/* Rating */}
-              <div>
-                <label className="block text-sm text-zinc-300 mb-1">Your Rating</label>
-                <select className="w-full px-4 py-3 rounded-lg bg-zinc-900/80 border border-white/10 focus:ring-2 focus:ring-purple-500">
-                  <option value="">Rate this movie</option>
-                  <option value="1">⭐ 1</option>
-                  <option value="2">⭐ 2</option>
-                  <option value="3">⭐ 3</option>
-                  <option value="4">⭐ 4</option>
-                  <option value="5">⭐ 5</option>
-                </select>
-              </div>
+                        ))}
+                    </div>
 
-            </div>
-          )}
+                )}
+            </section>
 
-          {/* Submit */}
-          <button
-            type="submit"
-            className="w-full py-3 rounded-lg font-semibold text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:opacity-90 transition"
-          >
-            Add Movie
-          </button>
-        </form>
-
-        {/* Footer */}
-        <p className="text-center text-zinc-400 mt-6 text-sm">
-          <Link to="/movies" className="text-yellow-400 hover:underline">
-            ← Back to Movies
-          </Link>
-        </p>
-
-      </div>
-    </div>
-  );
+            <Footer />
+        </div>
+    );
 }
 
 export default Movie;
