@@ -124,8 +124,10 @@ let getBookCountByUser = async (req, res) => {
 }
 
 
+
+
 let getImage = (req, res) => {
-    const imgPath = path.join(__dirname, "uploads", req.params.imgName);
+    const imgPath = path.join(__dirname, "../uploads",'hello');
 
     fs.readFile(imgPath, (err, data) => {
         if (err) {
