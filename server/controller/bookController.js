@@ -3,7 +3,7 @@ const Books = require("../models/bookModel");
 let fs = require('fs')
 
 let addBook = async (req, res) => {
-    let {  title, author, genre, pages, readOn, rating, review } = req.body
+    let { title, author, genre, pages, readOn, rating, review } = req.body
 
 
     try {
@@ -123,8 +123,9 @@ let getBookCountByUser = async (req, res) => {
 }
 
 let getImage = (req, res) => {
+    const imgPath = path.join(__dirname, "uploads", req.params.imgName);
 
-    fs.readFile(`C:/Users/user/Desktop/fathima-bs/Mithra/server/uploads/${req.params.imgName}`, (err, data) => {
+    fs.readFile(imgPath, (err, data) => {
         if (err) {
             return res.status(404).send("Image not found");
         }
