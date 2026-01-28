@@ -3,7 +3,7 @@ const Books = require("../models/bookModel");
 let fs = require('fs')
 
 let addBook = async (req, res) => {
-    let { imageUrl, title, author, genre, pages, readOn, rating, review } = req.body
+    let {  title, author, genre, pages, readOn, rating, review } = req.body
 
 
     try {

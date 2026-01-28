@@ -1,10 +1,10 @@
 let express = require('express')
 const { addMovie, getAllMovie, getMovieById, updateMovie, getMovieCountByUser } = require('../controller/movieController')
-
+const upload = require('../config/multer')
 
 let movieRoute = express.Router()
 
-movieRoute.post('/addmovie/:id', addMovie)
+movieRoute.post('/addmovie/:id', upload.single('imageUrl'),addMovie)
 movieRoute.get('/all-movie/:id', getAllMovie)
 movieRoute.get('/movie-detail/:id', getMovieById)
 movieRoute.patch('/update/:id', updateMovie)

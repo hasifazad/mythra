@@ -2,7 +2,7 @@ const Movies = require("../models/movieModel");
 
 
 let addMovie = async (req, res) => {
-    let { imageUrl, title, director, genre, duration, watchedOn, rating, review } = req.body
+    let { title, director, genre, duration, watchedOn, rating, review } = req.body
     try {
         let userId = req.params.id
         // console.log(userId);
@@ -13,7 +13,7 @@ let addMovie = async (req, res) => {
         }
         let newMovie = await new Movies({
             userId,
-            imageUrl,
+            imageUrl: req.file?.filename || "",
             title,
             director,
             genre,
