@@ -87,7 +87,7 @@ function AddMovie() {
       formData.append("review", data.review);
       formData.append("rating", rating);
 
-      await api.post(`/book/addbook/${userId}`, formData, {
+      await api.post(`/movie/addmovie/${userId}`, formData, {
         headers: { "Content-Type": "multipart/form-data" }
       })
 

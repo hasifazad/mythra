@@ -21,7 +21,7 @@ function AddBook() {
     genre: "",
     pages: 0,
     readOn: "",
-    rating: 0,
+    rating: 4,
     review: ""
   })
 
