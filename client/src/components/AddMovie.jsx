@@ -2,6 +2,9 @@ import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import api from '../axios/axios';
+
+
 
 function AddMovie() {
   let [showMore, setShowMore] = useState(false);
