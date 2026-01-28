@@ -1,5 +1,11 @@
 let express = require('express')
 let cors = require('cors')
+let dotenv = require("dotenv")
+
+let dns = require("dns");
+dns.setDefaultResultOrder("ipv4first");
+
+
 const mongoDb = require('./config/mongoDb');
 const userRoute = require('./routes/userRoute');
 const bookRoute = require('./routes/bookRoute');
@@ -7,10 +13,12 @@ const movieRoute = require('./routes/movieRoute');
 const imageRoute = require('./routes/imageRoute');
 
 
+dotenv.config()
+
 let app = express()
 app.use(express.json())
 app.use(cors())
-mongoDb();
+mongoDb(process.env.MONGODB_URL);
 
 app.use('/api/user', userRoute)
 app.use('/api/book', bookRoute)
@@ -18,7 +26,7 @@ app.use('/api/movie', movieRoute)
 app.use('/api/image', imageRoute)
 
 app.listen(3000, () => {
-    console.log("Mithra-app server Connected");
+    console.log("server Connected");
 })
 
 
