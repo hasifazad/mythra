@@ -20,7 +20,7 @@ function AddMovie() {
     genre: "",
     duration: 0,
     watchedOn: "",
-    rating: 0,
+    rating: 4,
     review: ""
   })
 
